@@ -8,17 +8,13 @@ word = 0
 compword = 1
 x = 0
 
-while true
+begin
 	input = gets.chomp
 	input = input.downcase
-	if input == ''
-		break
-	else
-		set.push input
-		words = words +1
-		tosort = tosort + 1
-	end
-end
+	set.push input
+	words = words +1
+	tosort = tosort + 1
+end while input != ''
 
 set.push ''
 
@@ -30,25 +26,14 @@ def try set, sortedset, words, word, compword, tosort, unsortset, x
 	elsif set[word] < set[compword] || compword == words
 			if compword == words
 				sortedset.push set[word]
-				x = word
-				x2 = word
-					while true
-						x = x + 1
-						if x < words
-							unsortset.push set[x]
-						elsif x == words
-							break
-						end
-					end
+				for x in (word+1)..(words-1)
+					unsortset.push set[x]
+				end
 
-					while true
-						x2 = x2 - 1
-						if x2 >= 0
-							unsortset.push set[x2]
-						elsif x2 < 0
-							break
-						end
-					end
+				for x in 0..(word-1)
+					unsortset.push set[x]
+                                end
+
 				set = unsortset
 				unsortset = []
 				set.push ''
@@ -59,13 +44,17 @@ def try set, sortedset, words, word, compword, tosort, unsortset, x
 				compword = 1
 				try set, sortedset, words, word, compword, tosort, unsortset, x
 			else
-				x = x+1
+				x = x + 1
 				compword = compword + 1
 				try set, sortedset, words, word, compword, tosort, unsortset, x
 			end
+
+        # Add some more comments to describe what you are trying to do
+        # at each point in the code.  I'm not 100% why this elsif is needed
+        # for example.  This will also help yourself after a day or two away
 	elsif set[word] > set[compword] || set[word] == set[compword]
-		x = x+1
-		compword = compword +1
+		x = x + 1
+		compword = compword + 1
 		word = compword - 1
 		try set, sortedset, words, word, compword, tosort, unsortset, x
 	else
